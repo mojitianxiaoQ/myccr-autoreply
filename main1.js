@@ -1,37 +1,37 @@
 // ==UserScript==
-// @name         DeepSeek 智能答题助手 (单选+多选版)
+// @name         DeepSeek 智能答题助手 (单选+多选版)// @name         DeepSeek 智能答题助手 (单选 多选版)
 // @namespace    http://tampermonkey.net/
 // @version      1.0
-// @description  按 Alt+D 先尝试单选，若无题则尝试多选
+// @description  按 Alt+D 先尝试单选，若无题则尝试多选// @description  按 Alt D 先尝试单选，若无题则尝试多选
 // @author       You
-// @match        *://*/*
+// @match        *://*/*@match *://*/*
 // @grant        GM_xmlhttpRequest
 // @connect      api.deepseek.com
 // ==/UserScript==
 
-(function () {
-    'use strict';
+(function   函数 () {
+    'use strict'   使用严格的;   使用严格的;
 
     // 🔑 替换为你的 DeepSeek API Key
-    const API_KEY = 'sk-e8ecacb3aab24e66a1d608550e287579';
+    const   常量 API_KEY = '请自己注册api进行使用';
 
-    document.addEventListener('keydown', function (e) {
-        if (e.altKey && e.key === 'd') {
+    document   文档.addEventListener('keydown'   “keydown”, function   函数 (e) {文档。addEventListener('keydown'   “keydown”, function   函数 (e) {
+        if   如果 (e.altKey && e.key   关键 === 'd') {
             e.preventDefault();
             startAutoAnswer();
         }
     });
 
-    async function startAutoAnswer() {
-        console.log('🚀 启动脚本... 尝试单选模式');
-        await forceLoadAllQuestions();
+    async   异步 function   函数 startAutoAnswer() {异步函数startAutoAnswer() {
+        console   控制台.log   日志('🚀 启动脚本... 尝试单选模式');
+        await   等待 forceLoadAllQuestions();等待forceLoadAllQuestions ();
 
         // 1. 先尝试单选模式
-        let questions = extractSingleQuestions();
+        let   让   问题 questions      问题问题 = extractSingleQuestions();
 
-        if (questions.length === 0) {
-            console.log('🔍 单选模式未找到题目，尝试多选模式');
-            questions = extractMultipleQuestions();
+        if   如果 (questions   问题.length   长度 === 0) {如果问题。长度=== 0){
+            console   控制台.log   日志('🔍 单选模式未找到题目，尝试多选模式');
+            questions   问题 = extractMultipleQuestions();
         }
 
         if (questions.length === 0) {
