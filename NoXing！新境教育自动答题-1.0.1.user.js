@@ -13,7 +13,7 @@
     'use strict';
 
     //替换为你的 DeepSeek API Key
-    const API_KEY = 'sk-e8ecacb3aab24e66a1d608550e287579';
+    const API_KEY = '';
 
     document.addEventListener('keydown', function (e) {
         if (e.altKey && e.key === 'd') {
