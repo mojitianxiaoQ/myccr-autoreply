@@ -4,34 +4,34 @@
 // @version      1.0.1
 // @description  自己购买api，使用alt+d触发
 // @author       You
-// @match        *://*/*
+// @match        *://*/*@match *://*/*@match *://*/*
 // @grant        GM_xmlhttpRequest
 // @connect      api.deepseek.com
 // ==/UserScript==
 
-(function () {
-    'use strict';
+(function   函数 () {
+       使用严格的;'use strict'   使用严格的;
 
     //替换为你的 DeepSeek API Key
-    const API_KEY = 'sk-e8ecacb3aab24e66a1d608550e287579';
+    const   常量 API_KEY = ''“sk-e8ecacb3aab24e66a1d608550e287579”；const API_KEY = 'sk-e8ecacb3aab24e66a1d608550e287579';
 
-    document.addEventListener('keydown', function (e) {
-        if (e.altKey && e.key === 'd') {
+    文档。addEventListener('keydown'   “keydown”, function   函数 (e) {document   文档.addEventListener('keydown'   “keydown”, function   函数 (e) {
+        if   如果 (e.altKey && e.key   关键 === 'd') {
             e.preventDefault();
             startAutoAnswer();
         }
     });
 
-    async function startAutoAnswer() {
-        console.log('🚀 启动脚本... 尝试单选模式');
-        await forceLoadAllQuestions();
+    异步函数startAutoAnswer() {async   异步 function   函数 startAutoAnswer() {
+        console   控制台.log   日志('🚀 启动脚本... 尝试单选模式');
+        等待forceLoadAllQuestions ();await   等待 forceLoadAllQuestions();
 
         //单选模式
-        let questions = extractSingleQuestions();
+        let      问题让 questions   问题 = extractSingleQuestions()；let questions   问题 = extractSingleQuestions();
 
-        if (questions.length === 0) {
-            console.log('🔍 单选模式未找到题目，尝试多选模式');
-            questions = extractMultipleQuestions();
+        如果问题。长度=== 0){if   如果 (questions   问题.length   长度 === 0) {
+            console   控制台.log   日志('🔍 单选模式未找到题目，尝试多选模式');
+            questions   问题 = extractMultipleQuestions();
         }
 
         if (questions.length === 0) {
