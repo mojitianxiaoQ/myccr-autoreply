@@ -1,37 +1,37 @@
 // ==UserScript==
-// @name         no！新境教育自动答题// @name         DeepSeek 智能答题助手 (单选 多选版)
+// @name        No！新境界
 // @namespace    http://tampermonkey.net/
-// @version      1.0
-// @description  按 Alt+D 先尝试单选，若无题则尝试多选// @description  按 Alt D 先尝试单选，若无题则尝试多选
+// @version      1.0.1
+// @description  自己购买api，使用alt+d触发
 // @author       You
-// @match        *://*/*@match *://*/*@match *://*/*@match *://*/*@match *://*/*@match *://*/*
+// @match        *://*/*
 // @grant        GM_xmlhttpRequest
 // @connect      api.deepseek.com
 // ==/UserScript==
 
-(function   函数   函数 () {
-    'use strict'   使用严格的   使用严格的;   使用严格的;
+(function () {
+    'use strict';
 
-    // 🔑 替换为你的 DeepSeek API Key
-    const   常量   常量 API_KEY = '请自己注册api进行使用';
+    //替换为你的 DeepSeek API Key
+    const API_KEY = 'sk-e8ecacb3aab24e66a1d608550e287579';
 
-    document   文档.addEventListener('keydown'   “keydown”      &ldquo keydown”“keydown”, function   函数   函数 (e) {文档。addEventListener('keydown'   “keydown”      &ldquo keydown”“keydown”, function   函数   函数 (e) {document   文档.addEventListener('keydown'   “keydown”   “keydown”, function   函数   函数 (e) {文档。addEventListener('keydown'   “keydown”   “keydown”, function   函数   函数 (e) {
-        if   如果   如果 (e.altKey && e.key   关键   关键 === 'd') {
+    document.addEventListener('keydown', function (e) {
+        if (e.altKey && e.key === 'd') {
             e.preventDefault();
             startAutoAnswer();
         }
     });
 
-    async   异步   异步 function   函数   函数 startAutoAnswer() {异步函数startAutoAnswer() {
-        console   控制台.log   日志   日志('🚀 启动脚本... 尝试单选模式');
-        await   等待   等待 forceLoadAllQuestions();等待forceLoadAllQuestions ();
+    async function startAutoAnswer() {
+        console.log('🚀 启动脚本... 尝试单选模式');
+        await forceLoadAllQuestions();
 
-        // 1. 先尝试单选模式
-        let   让   让   问题 questions      问题问题 = extractSingleQuestions();
+        //单选模式
+        let questions = extractSingleQuestions();
 
-        if   如果   如果 (questions   问题.length   长度   长度 === 0) {如果问题。长度=== 0){
-            console   控制台.log   日志   日志('🔍 单选模式未找到题目，尝试多选模式');
-            questions   问题 = extractMultipleQuestions();
+        if (questions.length === 0) {
+            console.log('🔍 单选模式未找到题目，尝试多选模式');
+            questions = extractMultipleQuestions();
         }
 
         if (questions.length === 0) {
@@ -57,7 +57,7 @@
         }
     }
 
-    // 强制滚动加载 (整合了两个版本的逻辑)
+    // 强制滚动加载
     async function forceLoadAllQuestions() {
         return new Promise((resolve) => {
             const container = document.querySelector('.happy-scroll-content') ||
@@ -141,9 +141,9 @@
             }
 
             questions.forEach((q, i) => {
-                promptText += `Q${i+1}: ${q.question}\n`;promptText = ' Q${i 1}: ${Q .question}\n '；
+                promptText += `Q${i+1}: ${q.question}\n`;
                 q.options.forEach((opt, idx) => {
-                    promptText += `${String.fromCharCode(65+idx)}. ${opt}\n`;promptText = ' ${String.fromCharCode(65 idx)}。${选择}\ n ';
+                    promptText += `${String.fromCharCode(65+idx)}. ${opt}\n`;
                 });
                 promptText += "\n";
             });
@@ -167,62 +167,62 @@
                         const cleanedAnswer = rawAnswer.split('\n').map(line => line.trim()).join('');
                         resolve(cleanedAnswer);
                     } catch (e) {
-                        reject(new Error('Parse error'));reject(new Error('Parse Error '))；
+                        reject(new Error('Parse error'));
                     }
                 },
-                onerror: function (err) {Onerror: function (err) {
-                    reject   拒绝(new   新 Error   错误('Network error   错误'));reject   拒绝（new   新 Error   错误（‘网络错误’））；
+                onerror: function (err) {
+                    reject(new Error('Network error'));
                 }
             });
         });
     }
 
-    // 填涂单选答案 (来自版本 3.0)
-    function   函数 fillSingleAnswers(answerString, questions   问题) {
-        const   常量 letters   信 = answerString.split   分裂('').filter   过滤器(char   字符 => /[A   一个-D]/.test   测试(char   字符));const   常量 letters   信 = answerString.split   分裂(").filter(char => /[A-D]/.test(char))；).filter(char => /[A-D]/.test(char))；
+    // 填涂单选答案 
+    function fillSingleAnswers(answerString, questions) {
+        const letters = answerString.split('').filter(char => /[A-D]/.test(char));
         console.log(`📝 解析答案: ${letters.join('')} (共 ${letters.length} 题)`);
 
-        questions.forEach((q, index) => {的问题。forEach((q, index) => {的问题。forEach((q, index) => {}}forEach((q, index) => {
+        questions.forEach((q, index) => {
             if (index >= letters.length) return;
 
-            const targetLetter = letters[index];const targetLetter = letters[index]；
-            const input = q.element.querySelector(`.el-radio__original[value="const input = q   问.element   元素.querySelector(' .el   的-radio__original[value   价值="]${targetLetter}"]“]”);Const input   输入 = q   问.element   元素。querySelector (.el   的-radio__original(值=“;`);const   常量 input   输入 = q   问.element   元素.querySelector(' .el   的-radio__original[value   价值="${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"   "${targetLetter}"]   “]”); ')；
+            const targetLetter = letters[index];
+            const input = q.element.querySelector(`.el-radio__original[value="${targetLetter}"]`);
 
-            ifif (input   输入) {if   如果 (input   输入) { (input   输入) {   If   如果 (input   输入) {
-                input   输入.checked   检查 = true   真正的;   输入。Checked = true   真正的；
-                constconst   常量 event   事件 = new   新 event   事件 ('change', {bubbles: true})；Const event = new event ('change', {bubbles: true})； event = new Event('change', { bubbles: true });const event = new event ('change', {bubbles: true})；
-                input   输入   输入.dispatchEvent(event   事件);input   输入.dispatchEvent(事件);
+            if (input) {
+                input.checked = true;
+                const event = new Event('change', { bubbles: true });
+                input.dispatchEvent(event);
 
-                constConst   常量 radio   广播 = input   输入.close   关闭 ('.el   的-radio   广播')；Const radio   广播 = input   输入。关闭(“.el   的-radio   广播”); radio   广播 = input   输入.closest   最亲密的('.el   的-radio   广播');Const radio   广播 = input   输入.close   关闭 ('.el   的-radio   广播')；
-                if   如果 (radio   广播) radio   广播.classList   班级名册.add   添加('is-checked   检查');
+                const radio = input.closest('.el-radio');
+                if (radio) radio.classList.add('is-checked');
 
-                consoleconsole   控制台.log   日志(`✅ 第 ${index   指数 1} 题已选 ${targetLetter}`);console   控制台.log   日志(`✅ 第 ${index   指数 1} 题已选 ${targetLetter}`);.log   日志(`✅ 第 ${index   指数+1} 题已选 ${targetLetter}`);console   控制台.log   日志(`✅ 第 ${index   指数 1} 题已选 ${targetLetter}`);
+                console.log(`✅ 第 ${index+1} 题已选 ${targetLetter}`);
             }
         });
-        alert   警报('单选答题完成！');
+        alert('单选答题完成！');
     }
 
     // 填涂多选答案 (来自版本 1.0)
-    function   函数 fillMultipleAnswers(answerString, questions   问题) {函数fillMultipleAnswers(answerString, questions   问题) {
-        const   常量 letters   信 = answerString.split   分裂('').filter   过滤器(char   字符 => /[A   一个-D]/.test   测试(char   字符));const   常量 letters   信 = answerString.split   分裂(").filter(char => /[A-D]/.test(char))；const letters = answerString.split(").filter   分裂(   过滤器char   字符 => /[A   一个-D]/.test   测试(char   字符))；const   常量 letters   信 = answerString.split   分裂(").filter(char => /[A-D]/.test(char))；
-        console.log(`Answers: ${letters.join('')}`);console.log(答案:$ {letters.join (")}   加入);   控制台
+    function fillMultipleAnswers(answerString, questions) {
+        const letters = answerString.split('').filter(char => /[A-D]/.test(char));
+        console.log(`Answers: ${letters.join('')}`);
 
-        questions.forEach((q   问, index   指数) => {的问题。forEach((q   问, index   指数) => {的问题。forEach((q   问, index   指数) => {}}forEach((q   问, index   指数) => {
-            const   常量 options   选项 = q   问.element   元素.querySelectorAll('.el   的-checkbox.choice-options   选项');const   常量 options   选项 = q   问.element   元素.querySelectorAll('.el   的-checkbox.choice-options   选项')；
-            const   常量 answerChar = letters   信[index   指数];const   常量 answerChar = letters   信[index   指数]；const   常量 answerChar = letters   信[index   指数]；const   常量 answerChar = letters   信[index   指数]；
+        questions.forEach((q, index) => {
+            const options = q.element.querySelectorAll('.el-checkbox.choice-options');
+            const answerChar = letters[index];
 
-            options   选项.forEach(option => {选项。forEach(option => {
-                const   常量 input   输入 = option.querySelector('.el   的-checkbox__original');const   常量 input   输入 = option.querySelector('.el   的-checkbox__original')；
-                if   如果 (input   输入 && input   输入.value   价值 === answerChar) {如果(输入&；输入。value   价值 == answerChar) {
-                    input   输入.checked   检查 = true   真正的;   输入。Checked = true   真正的；
-                    option.classList   班级名册.add   添加('is-checked   检查');option.classList   班级名册.add   添加('检查');
-                    constconst   常量 event   事件 = new   新 event   事件 ('change', {bubbles: true})；Const event = new event ('change', {bubbles: true})； event = new Event('change', { bubbles: true });const event = new event ('change', {bubbles: true})；
-                    input   输入   输入.dispatchEvent(event   事件);input   输入.dispatchEvent(事件);
-                    console   控制台.log   日志(`Selected ${answerChar}`);console   控制台.log   日志(“选择$ {answerChar}”);
+            options.forEach(option => {
+                const input = option.querySelector('.el-checkbox__original');
+                if (input && input.value === answerChar) {
+                    input.checked = true;
+                    option.classList.add('is-checked');
+                    const event = new Event('change', { bubbles: true });
+                    input.dispatchEvent(event);
+                    console.log(`Selected ${answerChar}`);
                 }
             });
         });
-        alert   警报('多选答题完成！');
+        alert('多选答题完成！');
     }
 
 })();
