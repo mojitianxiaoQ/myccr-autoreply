@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      1.0.1
 // @description  自己购买api，使用alt+d触发
-// @author       You
+// @author       墨迹天笑
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
 // @connect      api.deepseek.com
