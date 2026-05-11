@@ -1,36 +1,36 @@
 // ==UserScript==
-// @name         DeepSeek 智能答题助手 (单选+多选版)// @name         DeepSeek 智能答题助手 (单选 多选版)
+// @name         no！新境教育自动答题// @name         DeepSeek 智能答题助手 (单选 多选版)
 // @namespace    http://tampermonkey.net/
 // @version      1.0
 // @description  按 Alt+D 先尝试单选，若无题则尝试多选// @description  按 Alt D 先尝试单选，若无题则尝试多选
 // @author       You
-// @match        *://*/*@match *://*/*
+// @match        *://*/*@match *://*/*@match *://*/*@match *://*/*@match *://*/*@match *://*/*
 // @grant        GM_xmlhttpRequest
 // @connect      api.deepseek.com
 // ==/UserScript==
 
-(function   函数 () {
-    'use strict'   使用严格的;   使用严格的;
+(function   函数   函数 () {
+    'use strict'   使用严格的   使用严格的;   使用严格的;
 
     // 🔑 替换为你的 DeepSeek API Key
-    const   常量 API_KEY = '请自己注册api进行使用';
+    const   常量   常量 API_KEY = '请自己注册api进行使用';
 
-    document   文档.addEventListener('keydown'   “keydown”, function   函数 (e) {文档。addEventListener('keydown'   “keydown”, function   函数 (e) {
-        if   如果 (e.altKey && e.key   关键 === 'd') {
+    document   文档.addEventListener('keydown'   “keydown”      &ldquo keydown”“keydown”, function   函数   函数 (e) {文档。addEventListener('keydown'   “keydown”      &ldquo keydown”“keydown”, function   函数   函数 (e) {document   文档.addEventListener('keydown'   “keydown”   “keydown”, function   函数   函数 (e) {文档。addEventListener('keydown'   “keydown”   “keydown”, function   函数   函数 (e) {
+        if   如果   如果 (e.altKey && e.key   关键   关键 === 'd') {
             e.preventDefault();
             startAutoAnswer();
         }
     });
 
-    async   异步 function   函数 startAutoAnswer() {异步函数startAutoAnswer() {
-        console   控制台.log   日志('🚀 启动脚本... 尝试单选模式');
-        await   等待 forceLoadAllQuestions();等待forceLoadAllQuestions ();
+    async   异步   异步 function   函数   函数 startAutoAnswer() {异步函数startAutoAnswer() {
+        console   控制台.log   日志   日志('🚀 启动脚本... 尝试单选模式');
+        await   等待   等待 forceLoadAllQuestions();等待forceLoadAllQuestions ();
 
         // 1. 先尝试单选模式
-        let   让   问题 questions      问题问题 = extractSingleQuestions();
+        let   让   让   问题 questions      问题问题 = extractSingleQuestions();
 
-        if   如果 (questions   问题.length   长度 === 0) {如果问题。长度=== 0){
-            console   控制台.log   日志('🔍 单选模式未找到题目，尝试多选模式');
+        if   如果   如果 (questions   问题.length   长度   长度 === 0) {如果问题。长度=== 0){
+            console   控制台.log   日志   日志('🔍 单选模式未找到题目，尝试多选模式');
             questions   问题 = extractMultipleQuestions();
         }
 
